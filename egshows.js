@@ -1,6 +1,5 @@
 var express = require('express');
 var https = require('https');
-var config = require('./config.json');
 var app = express();
 var rawData;
 
@@ -14,7 +13,7 @@ function getData () {
 
   return new Promise(function (resolve, reject){
     
-    https.get(process.env.url + config.params + process.env.key, function(res) {
+    https.get(process.env.url + process.env.key, function(res) {
 
         rawData = '';
         res.on('data', function(chunk) { 
