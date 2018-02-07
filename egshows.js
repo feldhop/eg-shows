@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
     var parsedData = JSON.parse(value);
     res.setHeader('content-type', 'application/json');
-    res.send(JSON.stringify(parsedData.data));
+    res.send(parsedData.data);
   });
 });
 
