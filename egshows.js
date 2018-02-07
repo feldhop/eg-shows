@@ -33,7 +33,8 @@ function getData () {
 
 app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
-    res.send(JSON.parse(value));
+    var parsedData = JSON.parse(value);
+    res.send(JSON.stringify(parsedData.data));
   });
 });
 
