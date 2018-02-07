@@ -35,6 +35,7 @@ app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
     var parsedData = JSON.parse(value);
     res.setHeader('content-type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(parsedData.data);
   });
 });
