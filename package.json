@@ -1,0 +1,14 @@
+{
+  "name": "eg-shows-api",
+  "version": "1.0.0",
+  "description": "API to return Emerald Grove shows",
+  "main": "egshows.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cory Mandt",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
