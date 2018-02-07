@@ -14,7 +14,7 @@ function getData () {
 
   return new Promise(function (resolve, reject){
     
-    https.get(config.url + config.params + config.key, function(res) {
+    https.get(process.env.url + config.params + process.env.key, function(res) {
 
         rawData = '';
         res.on('data', function(chunk) { 
@@ -26,7 +26,7 @@ function getData () {
         });
 
     }).on('error', function(e) {
-        reject(d);
+        reject(e);
         console.error(e);
     });
   });
