@@ -2,12 +2,32 @@ var express = require('express');
 var https = require('https');
 var app = express();
 var rawData;
+var parsedData;
 
 // Use the environment variable or use a given port
 var PORT = process.env.PORT || 8080;
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
+function splitShows (data) {
+  var response = {}
+  var currentDate = new Date();
+  var showDate;
+
+  response.upcomingshows = [];
+  response.oldshows = [];
+
+  for (i = 0; i < data.length; i+=1) {
+    showDate = new Date(data[i].start_time);
+
+    if (showDate < currentDate) {
+      (response.oldshows).push(data[i]);
+    } else {
+      (response.upcomingshows).push(data[i]);
+    }
+
+  }
+
+  return response;
+}
 
 function getData () {
 
@@ -33,14 +53,18 @@ function getData () {
 
 app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
-    var parsedData = JSON.parse(value);
+    parsedData = JSON.parse(value);
+    parsedData = splitShows(parsedData.data);
+    parsedData.success = true;
+    parsedData = JSON.stringify(parsedData);
+
     res.setHeader('content-type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.send(parsedData.data);
+    res.send(parsedData);
   });
 });
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, function () {
   console.log('Server listening on: http://localhost:%s', PORT);
 });
