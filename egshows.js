@@ -7,6 +7,7 @@ var parsedData;
 // Use the environment variable or use a given port
 var PORT = process.env.PORT || 8080;
 
+// Split shows into old and upcoming
 function splitShows (data) {
   var response = {}
   var currentDate = new Date();
@@ -32,7 +33,7 @@ function splitShows (data) {
 function getData () {
 
   return new Promise(function (resolve, reject){
-    
+
     https.get(process.env.url + process.env.key, function(res) {
 
         rawData = '';
@@ -46,21 +47,28 @@ function getData () {
 
     }).on('error', function(e) {
         reject(e);
-        console.error(e);
     });
   });
 }
 
 app.get('/', function (req, res) {
+
+  // Set header values
+  res.setHeader('content-type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', 'http://emeraldgrovemusic.com/');
+
   dataPromise = getData().then(function(value) {
+    // On resolve
     parsedData = JSON.parse(value);
     parsedData = splitShows(parsedData.data);
     parsedData.success = true;
     parsedData = JSON.stringify(parsedData);
-
-    res.setHeader('content-type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(parsedData);
+  })
+  .catch(function(reason) {
+    // Handle errors
+    parsedData = JSON.parse(reason);
+    res.send(parsedData);    
   });
 });
 
