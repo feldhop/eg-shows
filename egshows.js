@@ -20,7 +20,7 @@ function buildShows (data) {
   var location;
   var show;
 
-  for (i = 0; i < data.length; i+=1) {
+  for (i = data.length; i >= 0; i-=1) {
     if (data[i].organizer.email === process.env.calendarId) {
       showDate = new Date(data[i].start.dateTime);
       location = data[i].location.split(', ');
