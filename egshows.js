@@ -77,7 +77,7 @@ app.get('/', function (req, res) {
 
   // Set header values
   res.setHeader('content-type', 'application/json');
-  // res.setHeader('Access-Control-Allow-Origin', 'http://emeraldgrovemusic.com');
+  res.setHeader('Access-Control-Allow-Origin', 'http://emeraldgrovemusic.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET')
 
   dataPromise = getData().then(function(value) {
