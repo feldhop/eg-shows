@@ -1,5 +1,7 @@
 var express = require('express');
 var https = require('https');
+const { google } = require('googleapis');
+var credentials = JSON.parse(process.env.creds);
 var app = express();
 var rawData;
 var parsedData;
@@ -8,23 +10,37 @@ var parsedData;
 var PORT = process.env.PORT || 8080;
 
 // Split shows into old and upcoming
-function splitShows (data) {
-  var response = {}
+function buildShows (data) {
+  var response = {
+    oldshows: [],
+    upcomingshows: []
+  }
   var currentDate = new Date();
   var showDate;
-
-  response.upcomingshows = [];
-  response.oldshows = [];
+  var location;
+  var show;
 
   for (i = 0; i < data.length; i+=1) {
-    showDate = new Date(data[i].start_time);
-
-    if (showDate < currentDate) {
-      (response.oldshows).push(data[i]);
-    } else {
-      (response.upcomingshows).push(data[i]);
+    if (data[i].organizer.email === process.env.calendarId) {
+      showDate = new Date(data[i].start.dateTime);
+      location = data[i].location.split(', ');
+      show = {
+        place: {
+          name: data[i].summary,
+          location: { 
+            city: location.length > 2 ? location[2] : location[0], 
+            state: location.length > 2 ? location[3].split(' ')[0] : location[1] 
+          }
+        },
+        start_time: showDate,
+        id: data[i].description
+      };
+      if (showDate < currentDate) {
+        (response.oldshows).push(show);
+      } else {
+        (response.upcomingshows).push(show);
+      }
     }
-
   }
 
   return response;
@@ -33,21 +49,27 @@ function splitShows (data) {
 function getData () {
 
   return new Promise(function (resolve, reject){
+    var jwt = new google.auth.JWT(
+      credentials.client_email,
+      null,
+      credentials.private_key,
+      ['https://www.googleapis.com/auth/calendar']
+    )
 
-    https.get(process.env.url + process.env.key, function(res) {
-
-        rawData = '';
-        res.on('data', function(chunk) { 
-            rawData += chunk; 
-        });
-
-        res.on('end', function () {
-            resolve(rawData);
-        });
-
-    }).on('error', function(e) {
-        reject(e);
+    var calendar = google.calendar({
+      version: 'v3',
+      auth: jwt
     });
+
+    calendar.events.list({
+      calendarId: 'm94v0snoj7k600pooa5d28qbgg@group.calendar.google.com'
+    }, function (err, res){
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(JSON.stringify(res.data.items));
+    })
   });
 }
 
@@ -55,15 +77,13 @@ app.get('/', function (req, res) {
 
   // Set header values
   res.setHeader('content-type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', 'http://emeraldgrovemusic.com');
+  // res.setHeader('Access-Control-Allow-Origin', 'http://emeraldgrovemusic.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET')
 
   dataPromise = getData().then(function(value) {
     // On resolve
     parsedData = JSON.parse(value);
-    parsedData = splitShows(parsedData.data);
-    parsedData.success = true;
-    parsedData = JSON.stringify(parsedData);
+    parsedData = buildShows(parsedData);
     res.send(parsedData);
   })
   .catch(function(reason) {
