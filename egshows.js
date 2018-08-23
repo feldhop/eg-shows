@@ -84,6 +84,7 @@ app.get('/', function (req, res) {
     // On resolve
     parsedData = JSON.parse(value);
     parsedData = buildShows(parsedData);
+    parsedData.success = true;
     res.send(parsedData);
   })
   .catch(function(reason) {
