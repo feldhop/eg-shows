@@ -1,6 +1,10 @@
 # ignore config file
 config.json
+Emerald Grove Calendar-99be426b42fc.json
 .env
 
 #ignore node modules
 /node_modules/
+
+#ignore package.json
+package.json
