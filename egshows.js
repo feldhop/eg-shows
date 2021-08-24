@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
     var parsedData = JSON.parse(value);
     res.setHeader('content-type', 'application/json');
-    res.setHeader("Access-Control-Allow-Origin", "https://emeraldgrovemusic.com/");
+    res.setHeader("Access-Control-Allow-Origin", "emeraldgrovemusic.com/");
     res.send(JSON.stringify(parsedData.data));
   });
 });
