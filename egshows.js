@@ -32,11 +32,15 @@ function getData () {
 	data: {
 		upcomingshows: [
 			{
-				place: { name: 'Tyranenna Brewing Company'},
-				date: new Date('2021-08-28 14:00:00'),
-				city: 'Lakes Mills',
-				state: 'WI',
-				time: new Date('2021-08-28 14:00:00')
+				place: { 
+					name: 'Tyranenna Brewing Company',
+					location: {
+						city: 'Lakes Mills',
+						state: 'WI'
+					}
+				},
+				date: new Date('2021-08-28 19:00:00'),
+				time: new Date('2021-08-28 19:00:00')
 			}
 		],
 		success: true
