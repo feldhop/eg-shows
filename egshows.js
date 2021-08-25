@@ -39,7 +39,7 @@ function getData () {
 						state: 'WI'
 					}
 				},
-				start_time: new Date(2021, 7, 28, 19, 0, 0)
+				start_time: new Date(2021, 7, 28, 24, 0, 0)
 			}
 		],
 		success: true
