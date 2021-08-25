@@ -33,7 +33,7 @@ function getData () {
 		upcomingshows: [
 			{
 				place: { 
-					name: 'Tyranenna Brewing Company',
+					name: 'Tyranena Brewing Company',
 					location: {
 						city: 'Lakes Mills',
 						state: 'WI'
