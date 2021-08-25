@@ -29,18 +29,18 @@ function getData () {
 //         console.error(e);
 //     });
     var res = {
-			data: {
-				upcomingshows: [
-					{
-						place: { name: 'Tyranenna Brewing Company'},
-						date: new Date('2021-08-28 14:00:00'),
-						city: 'Lakes Mills',
-						state: 'WI',
-						time: new Date('2021-08-28 14:00:00')
-					}
-				]
+	data: {
+		upcomingshows: [
+			{
+				place: { name: 'Tyranenna Brewing Company'},
+				date: new Date('2021-08-28 14:00:00'),
+				city: 'Lakes Mills',
+				state: 'WI',
+				time: new Date('2021-08-28 14:00:00')
 			}
-		}
+		]
+	}
+}
 
 		resolve(JSON.stringify(res));
   });
@@ -50,6 +50,7 @@ app.get('/', function (req, res) {
   dataPromise = getData().then(function(value) {
     var parsedData = JSON.parse(value);
     res.setHeader('content-type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', 'https://emeraldgrovemusic.com');
     res.send(JSON.stringify(parsedData.data));
   });
 });
