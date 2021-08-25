@@ -39,7 +39,7 @@ function getData () {
 				time: new Date('2021-08-28 14:00:00')
 			}
 		],
-		result: 'success'
+		success: true
 	}
 }
 
