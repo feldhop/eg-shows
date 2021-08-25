@@ -13,21 +13,36 @@ function getData () {
 
   return new Promise(function (resolve, reject){
     
-    https.get(process.env.url + process.env.key, function(res) {
+//     https.get(process.env.url + process.env.key, function(res) {
 
-        rawData = '';
-        res.on('data', function(chunk) { 
-            rawData += chunk; 
-        });
+//         rawData = '';
+//         res.on('data', function(chunk) { 
+//             rawData += chunk; 
+//         });
 
-        res.on('end', function () {
-            resolve(rawData);
-        });
+//         res.on('end', function () {
+//             resolve(rawData);
+//         });
 
-    }).on('error', function(e) {
-        reject(e);
-        console.error(e);
-    });
+//     }).on('error', function(e) {
+//         reject(e);
+//         console.error(e);
+//     });
+    var res = {
+			data: {
+				upcomingshows: [
+					{
+						place: { name: 'Tyranenna Brewing Company'},
+						date: new Date('2021-08-28 14:00:00'),
+						city: 'Lakes Mills',
+						state: 'WI',
+						time: new Date('2021-08-28 14:00:00')
+					}
+				]
+			}
+		}
+
+		resolve(JSON.stringify(res));
   });
 }
 
